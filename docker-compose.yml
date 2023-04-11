@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  fastapi-backend:
+    build: ./backend_fastapi
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://admin:M@rk0242101001@db:5432/personal-website-db
+
+  akka-backend:
+    build: ./backend_akka
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://admin:M@rk0242101001@db:5432/personal-website-db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - FASTAPI_BACKEND_URL=http://localhost:8000
+      - AKKA_BACKEND_URL=http://localhost:8080
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=M@rk0242101001
+      - POSTGRES_DB=personal-website-db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
