@@ -17,6 +17,10 @@ This repository contains the source code for my personal portfolio website, whic
 3. Run the backend and frontend servers
 4. Visit the website on your local machine
 
+## In order to run the containerization & orchestrations modules for export, do the following:
+
+Run kubectl kustomize | kubectl apply -f - in the directory containing the kustomization.yaml file.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
