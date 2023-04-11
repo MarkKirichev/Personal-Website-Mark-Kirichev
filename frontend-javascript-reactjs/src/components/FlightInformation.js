@@ -5,12 +5,34 @@ const FlightInformation = () => {
     const [flights, setFlights] = useState([]);
 
     useEffect(() => {
-        // Fetch flight data from the backend API
+        axios.get('/flights')
+            .then(res => {
+                setFlights(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }, []);
+
+    const addFlight = (flight) => {
+        // Add flight data to the server
+    };
+
+    const updateFlight = (flight) => {
+        // Update flight data on the server
+    };
+
+    const deleteFlight = (flightId) => {
+        // Delete flight data from the server
+    };
 
     return (
         <div>
-            {/* Render the flight information */}
+            <h1>Flight Information</h1>
+            <table>
+                {/* Render flight information in a table */}
+            </table>
+            {/* Add input elements for adding, editing, and deleting flight records */}
         </div>
     );
 };

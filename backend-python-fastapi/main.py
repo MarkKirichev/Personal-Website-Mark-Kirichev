@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPEXception, status
+from fastapi import FastAPI, Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 
 from pydantic import BaseModel
@@ -11,10 +11,20 @@ import auth
 
 app = FastAPI()
 
+
 class CreatePerson(BaseModel):
     full_name: str
     date_of_birth: str
     nationality: str
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @app.get("/")
@@ -47,7 +57,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
-            )
+        )
     access_token = auth.create_access_token(data={"sub": user.username})
     return {
         "access_token": access_token,
@@ -65,26 +75,48 @@ async def read_users_me(current_user: auth.User = Depends(auth.oauth2_scheme)):
 flights = []
 
 @app.get("/flights", response_model=List[Flight])
-async def get_flights():
+def get_flights(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    flights = db.query(Flight).offset(skip).limit(limit).all()
     return flights
 
 
+@app.get("/flights/{flight_id}", response_model=Flight)
+def get_flight(flight_id: int, db: Session = Depends(get_db)):
+    flight = db.query(Flight).filter(Flight.id == flight_id).first()
+    if flight is None:
+        raise HTTPException(status_code=404, detail="Flight not found")
+    return flight
+
+
 @app.post("/flights", response_model=Flight)
-async def create_flight(flight: Flight):
-    flights.append(flight)
+def create_flight(flight: Flight, db: Session = Depends(get_db)):
+    db.add(flight)
+    db.commit()
+    db.refresh(flight)
     return flight
 
 
-@app.put("/flights/{flight_id}", reponse_model=Flight)
-async def update_flight(flight_id: int, flight: Flight):
-    flight[flight_id] = flight
-    return flight
+@app.put("/flights/{flight_id}", response_model=Flight)
+def update_flight(flight_id: int, flight: Flight, db: Session = Depends(get_db)):
+    db_flight = db.query(Flight).filter(Flight.id == flight_id).first()
+    if db_flight is None:
+        raise HTTPException(status_code=404, detail="Flight not found")
+
+    for key, value in flight.dict().items():
+        setattr(db_flight, key, value)
+
+    db.add(db_flight)
+    db.commit()
+    db.refresh(db_flight)
+    return db_flight
 
 
 @app.delete("/flights/{flight_id}")
-async def delete_flight(flight_id: int):
-    flight.pop(flight_id)
-    return {
-        "detail": "Flight Deleted"
-    }
+def delete_flight(flight_id: int, db: Session = Depends(get_db)):
+    flight = db.query(Flight).filter(Flight.id == flight_id).first()
+    if flight is None:
+        raise HTTPException(status_code=404, detail="Flight not found")
 
+    db.delete(flight)
+    db.commit()
+    return {"detail": "Flight Deleted"}
