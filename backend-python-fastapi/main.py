@@ -3,13 +3,13 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from models import Person
+from models import Person, Flight
+from typing import List
 from database import SessionLocal, engine
 
 import auth
 
 app = FastAPI()
-
 
 class CreatePerson(BaseModel):
     full_name: str
@@ -37,6 +37,8 @@ def create_person(person: CreatePerson):
     db.close()
     return {"id": db_person.id}
 
+
+# Authentication / Authorization
 @app.post("/token", response_model=auth.Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = auth.authenticate_user(form_data.username, form_data.password)
@@ -56,4 +58,33 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 @app.get("/users/me")
 async def read_users_me(current_user: auth.User = Depends(auth.oauth2_scheme)):
     return current_user
+
+
+# Flight models
+
+flights = []
+
+@app.get("/flights", response_model=List[Flight])
+async def get_flights():
+    return flights
+
+
+@app.post("/flights", response_model=Flight)
+async def create_flight(flight: Flight):
+    flights.append(flight)
+    return flight
+
+
+@app.put("/flights/{flight_id}", reponse_model=Flight)
+async def update_flight(flight_id: int, flight: Flight):
+    flight[flight_id] = flight
+    return flight
+
+
+@app.delete("/flights/{flight_id}")
+async def delete_flight(flight_id: int):
+    flight.pop(flight_id)
+    return {
+        "detail": "Flight Deleted"
+    }
 
