@@ -1,0 +1,31 @@
+---
+- name: Deploy Personal Portfolio Application
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Docker
+      ansible.builtin.package:
+        name: docker
+        state: present
+
+    - name: Install Docker Compose
+      ansible.builtin.package:
+        name: docker-compose
+        state: present
+
+    - name: Create application directory
+      ansible.builtin.file:
+        path: /opt/personal-portfolio
+        state: directory
+
+    - name: Copy Docker Compose file to target host
+      ansible.builtin.copy:
+        src: ../docker-compose.yml
+        dest: /opt/personal-portfolio/docker-compose.yml
+
+    - name: Start the Docker Compose services
+      ansible.builtin.docker_compose:
+        project_src: /opt/personal-portfolio
+        state: present
+        restarted: yes
+        pull: yes
