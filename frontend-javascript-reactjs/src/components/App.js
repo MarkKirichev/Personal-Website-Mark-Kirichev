@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import MapComponent from './MapComponent';
+import VisitedCountriesTable from './VisitedCountriesTable';
 import Login from "./Login";
 import Footer from "./Footer";
 

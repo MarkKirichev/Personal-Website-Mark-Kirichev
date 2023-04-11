@@ -1,0 +1,12 @@
+.map-container {
+  // Add your custom map styles
+}
+
+.country-hover {
+  stroke: black;
+  stroke-width: 2;
+  fill-opacity: 0.5;
+  &:hover {
+    fill-opacity: 1;
+  }
+}

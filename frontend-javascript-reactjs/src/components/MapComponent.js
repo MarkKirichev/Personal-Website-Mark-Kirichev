@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Polyline, Marker, Popup, GeoJSON } from 'react-leaflet';
+import { MarkerClusterGroup } from 'leaflet.markercluster';
 
-const MapComponent = ({ flights, mapRegion }) => {
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet.markercluster/dist/leaflet.markercluster';
+
+import './MapComponent.scss';
+
+import countriesData from './countries.geo.json';
+
+
+const MapComponent = ({ flights, mapRegion, visitedCountries }) => {
     const [center, setCenter] = useState([51.505, -0.09]);
     const [zoom, setZoom] = useState(2);
 
@@ -78,5 +87,64 @@ const MapComponent = ({ flights, mapRegion }) => {
         </MapContainer>
     );
 };
+
+
+/*
+
+  // ... previous state variables
+
+  const [selectedCountry, setSelectedCountry] = useState(null);
+
+  const onEachCountry = (country, layer) => {
+    const countryCode = country.properties.ISO_A2;
+    layer.options.fillColor = visitedCountries[countryCode]?.color;
+    layer.options.className = 'country-hover';
+    layer.on({
+      mouseover: () => {
+        setSelectedCountry(country.properties.NAME);
+      },
+      mouseout: () => {
+        setSelectedCountry(null);
+      },
+    });
+  };
+
+  const renderCountryName = () => {
+    if (selectedCountry) {
+      return (
+        <div className="country-name" style={{ fontFamily: 'Funky Font' }}>
+          {selectedCountry}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  // ... previous render functions
+
+  return (
+    <MapContainer center={center} zoom={zoom} style={{ height: '100%', width: '100%' }}>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <GeoJSON
+        key="countries"
+        data={countriesData}
+        style={{ weight: 1, color: 'black' }}
+        onEachFeature={onEachCountry}
+      />
+      {renderFlightPaths()}
+      <MarkerClusterGroup>
+        {renderAirportMarkers()}
+      </MarkerClusterGroup>
+      {renderCountryName()}
+    </MapContainer>
+  );
+};
+
+ */
+
+
 
 export default MapComponent;
