@@ -1,0 +1,68 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+.login-container {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  text-align: center;
+
+  @include media-breakpoint-up(sm) {
+    padding: 60px;
+  }
+
+  .form-label {
+    display: inline-block;
+    margin-bottom: .5rem;
+    animation: fadeInDown 1s ease;
+  }
+
+  .form-control {
+    position: relative;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease;
+  }
+
+  .submit-btn {
+    animation: bounceIn 1s ease;
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
