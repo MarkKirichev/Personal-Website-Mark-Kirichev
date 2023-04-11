@@ -1,0 +1,5 @@
+resources:
+- backend-scala-akka.yaml
+- backend-python-fastapi.yaml
+- frontend-javascript-reactjs.yaml
+- db-sql-postgres.yaml
