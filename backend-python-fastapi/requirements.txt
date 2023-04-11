@@ -1,0 +1,17 @@
+# FastAPI for building the RESTful API
+fastapi
+
+# ASGI server for running FastAPI
+uvicorn
+
+# PostgreSQL database adapter for Python
+asyncpg
+
+# SQLAlchemy for SQL Toolkit and ORM
+sqlalchemy
+
+# CORS middleware for FastAPI
+fastapi-cors
+
+# Pydantic for data validation
+pydantic

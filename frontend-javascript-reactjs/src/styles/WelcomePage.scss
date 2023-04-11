@@ -1,0 +1,114 @@
+.welcome-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  background-color: #f8f9fa;
+}
+
+.welcome-title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: fadeIn 2s;
+}
+
+.welcome-text {
+  font-size: 1.2rem;
+  animation: fadeIn 3s;
+}
+
+.person-info {
+  margin-top: 2rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  animation: fadeIn 4s;
+}
+
+.person-name {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.person-dob,
+.person-nationality {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 0.15em solid #333;
+  white-space: nowrap;
+  animation: typing 5s steps(40, end), blink-caret 1s step-end infinite;
+}
+
+body {
+  cursor: url('../assets/pencil-cursor.png') 0 16, auto;
+}
+
+.odd-line {
+  text-align: left;
+  animation: fadeInLeft 2s;
+}
+
+.even-line {
+  text-align: right;
+  animation: fadeInRight 2s;
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// animations
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.funny-image-container {
+  margin-top: 2rem;
+  cursor: pointer;
+}
+
+.funny-image {
+  width: 200px;
+  transition: transform 0.3s;
+}
+
+.funny-image:hover {
+  transform: rotate(360deg) scale(1.2);
+}
