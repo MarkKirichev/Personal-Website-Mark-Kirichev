@@ -3,11 +3,13 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from models import Person, Flight
 from typing import List
-from database import SessionLocal, engine
 
-import auth
+from app.config import auth
+
+from .models.user import Person
+from .models.flight import Flight
+from .db.connection import SessionLocal
 
 app = FastAPI()
 
@@ -40,7 +42,11 @@ async def say_hello(name: str):
 @app.post("/hello")
 def create_person(person: CreatePerson):
     db = SessionLocal()
-    db_person = Person(full_name=person.full_name, date_of_birth=person.date_of_birth, nationality=person.nationality)
+    db_person = Person(
+        full_name=person.full_name,
+        date_of_birth=person.date_of_birth,
+        nationality=person.nationality
+    )
     db.add(db_person)
     db.commit()
     db.refresh(db_person)
@@ -73,6 +79,7 @@ async def read_users_me(current_user: auth.User = Depends(auth.oauth2_scheme)):
 # Flight models
 
 flights = []
+
 
 @app.get("/flights", response_model=List[Flight])
 def get_flights(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -119,4 +126,6 @@ def delete_flight(flight_id: int, db: Session = Depends(get_db)):
 
     db.delete(flight)
     db.commit()
-    return {"detail": "Flight Deleted"}
+    return {
+        "detail": "Flight Deleted"
+    }

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-akka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-akka
+  template:
+    metadata:
+      labels:
+        app: backend-akka
+    spec:
+      containers:
+      - name: backend-akka
+        image: <your_docker_registry>/backend-akka:latest
+        ports:
+        - containerPort: 8080

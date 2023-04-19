@@ -2,14 +2,16 @@
 
 start-all: start-backend-fastapi start-backend-akka start-frontend
 
+start-all-and-migrate-db: migrate-database start-backend-fastapi start-backend-akka start-frontend
+
 start-backend-fastapi:
-	cd backend_fastapi && uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+	cd backend-python-fastapi && uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 start-backend-akka:
-	cd backend_akka && sbt run
+	cd backend-scala-akka && sbt run
 
 start-frontend:
-	cd frontend && npm start
+	cd frontend-javascript-reactjs && npm start
 
 migrate-database:
-	cd backend_fastapi && alembic upgrade head
+	cd backend-python-fastapi && alembic upgrade head

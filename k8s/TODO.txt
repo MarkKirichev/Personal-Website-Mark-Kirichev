@@ -1,0 +1,4 @@
+Remember to replace <your_docker_registry> with your Docker registry,
+<base64_encoded_username> with your Base64-encoded PostgreSQL username, 
+<base64_encoded_password> with your Base64-encoded PostgreSQL password, and 
+<base64_encoded_database_url> with your Base64-encoded database URL.
